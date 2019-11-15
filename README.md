@@ -3,7 +3,7 @@
 ## Description
 The goal of this project is to represent the command line SHELL.
 
-##Compilation
+## Compilation
 Compilation is done usign `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`.
 
 ### Overview
@@ -13,15 +13,15 @@ cual permite al usuario dar órdenes al sistema operativo. En otras palabras
 podemos decir que el Shell es un programa que funciona de intermediario entre
 un operador y el sistema operativo.
 
-###Example
+### Example
 This shell takes the input as a standard Unix SHELL.
 Once the excecutable is run the user enters the desired
 input followed by a return.
-*`ls -l`
-*`cd -`
+* `ls -l`
+* `cd -`
 
 ### Release History
-*Nov 27 2019
+* Nov 27 2019
 
 ### Authors
 Jonathan Mazo - 1150@holbertonschool.com
