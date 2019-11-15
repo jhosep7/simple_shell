@@ -1,8 +1,9 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
+
 #define READLINE_BUFSIZE 1024
-#define LSH_TOK_BUFSIZE 64
-#define LSH_TOK_DELIM " \t\r\n\a"
+#define TOK_BUFSIZE 64
+#define TOK_DELIM " \t\r\n\a"
 
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -10,7 +11,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 char *read_line_of_comands(void);
+char **split_line(char *line);
+int hsh_execute(char **args);
+int hsh_cd(char **args);
+int hsh_exit(char **args);
+int hsh_launch(char **args);
+int hsh_num_builtins(void);
 
 #endif

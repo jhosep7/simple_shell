@@ -5,29 +5,22 @@
  * Return: dont return anything.
  */
 
-int main_loop(int argc, char *argv[])
+void main_loop(void)
 {
 	char *line;
 	char **args;
-	int status = 1;
+	int status;
 
 	do {
 		printf("#Prototype_Shell$ ");
 
-		if ((argc > 1) || (argv == NULL))
-		{
-			printf("hsh: expected only one argument\n");
-			return (EXIT_SUCCESS);
-		}
 		line = read_line_of_comands();
-		printf("%s\n", line);
-		args = hsh_split_line(line);
-		/* status = hsh_execute(args); */
+		args = split_line(line);
+		status = hsh_execute(args);
 
 		free(line);
-		/* free(args); */
+		free(args);
 	} while (status);
-	return (0);
 }
 
 /**
@@ -41,14 +34,17 @@ int main(int argc, char *argv[])
 {
 	int ac = argc;
 	char **av = argv;
-	int status = 0;
 
 	/* Load config files, if any. */
 
+	if (ac > 1 || av == NULL)
+	{
+		return (1);
+	}
 	/* Run command loop. */
-	status = main_loop(ac, av);
+	main_loop();
 
 	/* Perform any shutdown/cleanup. */
 
-	return (status);
+	return (EXIT_SUCCESS);
 }

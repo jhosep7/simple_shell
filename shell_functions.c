@@ -1,43 +1,6 @@
 #include "holberton.h"
 
-/**
-   @brief Split a line into tokens (very naively).
-   @param line The line.
-   @return Null-terminated array of tokens.
- */
-
-char **lsh_split_line(char *line)
-{
-  int bufsize = LSH_TOK_BUFSIZE, position = 0;
-  char **tokens = malloc(bufsize * sizeof(char*));
-  char *token, **tokens_backup;
-
-  if (!tokens) {
-    fprintf(stderr, "lsh: allocation error\n");
-    exit(EXIT_FAILURE);
-  }
-
-  token = strtok(line, LSH_TOK_DELIM);
-  while (token != NULL) {
-    tokens[position] = token;
-    position++;
-
-    if (position >= bufsize) {
-      bufsize += LSH_TOK_BUFSIZE;
-      tokens_backup = tokens;
-      tokens = realloc(tokens, bufsize * sizeof(char*));
-      if (!tokens) {
-		free(tokens_backup);
-        fprintf(stderr, "lsh: allocation error\n");
-        exit(EXIT_FAILURE);
-      }
-    }
-
-    token = strtok(NULL, LSH_TOK_DELIM);
-  }
-  tokens[position] = NULL;
-  return tokens;
-}
+int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_exit};
 
 /**
  * read_line_of_comands - Function that read all comands that user in.
@@ -46,44 +9,114 @@ char **lsh_split_line(char *line)
 
 char *read_line_of_comands(void)
 {
-	int bufsize = READLINE_BUFSIZE;
-	int position = 0;
-	char *buffer = malloc(sizeof(char) * bufsize);
-	int Char_by_char;
+	char *line = NULL;
+	size_t bufsize = READLINE_BUFSIZE;
+	ssize_t test = 0;
 
-	if (buffer == NULL)
+	test = getline(&line, &bufsize, stdin);
+	if (test < 0)
+	{
+		exit(EXIT_FAILURE);
+	}
+	return (line);
+}
+
+/**
+ * split_line - Split a line into tokens (very naively).
+ * @line: The line comands.
+ * Return: Null-terminated array of tokens.
+ */
+
+char **split_line(char *line)
+{
+	int bufsize = TOK_BUFSIZE, position = 0;
+	char **tokens = malloc(bufsize * sizeof(char *));
+	char *token, **tokens_backup;
+
+	if (tokens == NULL)
 	{
 		printf("hsh: allocation error\n");
 		exit(EXIT_FAILURE);
 	}
-
-	while (1)
+	token = strtok(line, TOK_DELIM);
+	while (token != NULL)
 	{
-		Char_by_char = getchar(); /* Read a character */
-		if (Char_by_char == EOF)
-		{
-			exit(EXIT_SUCCESS);
-		}
-		else if (Char_by_char == '\n')
-		{
-			buffer[position] = '\0';
-			return (buffer);
-		}
-		else
-		{
-			buffer[position] = Char_by_char;
-		}
+		tokens[position] = token;
 		position++;
-		/* If we have exceeded the buffer, reallocate. */
 		if (position >= bufsize)
 		{
-			bufsize += READLINE_BUFSIZE;
-			buffer = realloc(buffer, bufsize);
-			if (buffer == NULL)
+			bufsize += TOK_BUFSIZE;
+			tokens_backup = tokens;
+			tokens = realloc(tokens, bufsize * sizeof(char *));
+			if (tokens == NULL)
 			{
+				free(tokens_backup);
 				printf("hsh: allocation error\n");
 				exit(EXIT_FAILURE);
 			}
 		}
+		token = strtok(NULL, TOK_DELIM);
 	}
+	tokens[position] = NULL;
+	return (tokens);
+}
+
+/**
+ * hsh_launch - Launch a program and wait for it to terminate.
+ * @args: Null terminated list of arguments (including program).
+ * Return: Always returns 1, to continue execution.
+ */
+
+int hsh_launch(char **args)
+{
+	pid_t pid;
+	int status;
+
+	pid = fork();
+	if (pid == 0)
+	{/* Child process */
+		if (execvp(args[0], args) == -1)
+		{
+			perror("hsh");
+		}
+		exit(EXIT_FAILURE);
+	}
+	else if (pid < 0)
+	{/* Error forking */
+		perror("hsh");
+	}
+	else
+	{/* Parent process */
+		do {
+			waitpid(pid, &status, WUNTRACED);
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
+	return (1);
+}
+
+/**
+ * hsh_execute - Execute shell built-in or launch program.
+ * @args: Null terminated list of arguments.
+ * Return: 1 if the shell should continue running, 0 if it should terminate
+ */
+
+int hsh_execute(char **args)
+{
+	char *builtin_str[] = {"cd", "exit"};
+	int i = 0;
+
+	if (args[0] == NULL)
+	{
+		return (1);
+	}
+
+	for (i = 0; i < hsh_num_builtins(); i++)
+	{
+		if (strcmp(args[0], builtin_str[i]) == 0)
+		{
+			return ((*builtin_func[i])(args));
+		}
+	}
+
+	return (hsh_launch(args));
 }
