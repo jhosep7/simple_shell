@@ -1,0 +1,21 @@
+.TH "simple_shell" 27 "Nov 2019"
+.SH NAME
+simple_shell - SHELL (standard command line interpreter)
+.SH SYNOPSIS
+hsh [-flag] [arguments]
+.SH DESCRIPTION
+The hsh utility reads and interprets a command
+line string in either interactive or non-interactive mode.
+Later excecutes commands based on the input, then the local
+directory and the PATH are seeked.
+Depending of the application, the function prints to either
+stdout(standard output) or stderr(standard error).
+.SH EXAMPLE USAGE
+cd -
+
+ls -l
+
+.SH BUGS
+No Bugs currently.
+.SH AUTHORS
+Done By Jonatan Mazo and Jose Diaz.
