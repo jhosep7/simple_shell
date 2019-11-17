@@ -112,10 +112,14 @@ int hsh_execute(char **args)
 
 	for (i = 0; i < hsh_num_builtins(); i++)
 	{
-		if (strcmp(args[0], builtin_str[i]) == 0)
+		if (args[0] == builtin_str[i])
 		{
 			return ((*builtin_func[i])(args));
 		}
+//		if (strcmp(args[0], builtin_str[i]) == 0)
+//		{
+//			return ((*builtin_func[i])(args));
+//		}
 	}
 
 	return (hsh_launch(args));
