@@ -22,7 +22,7 @@ int hsh_cd(char **args)
 {
 	if (args[1] == NULL)
 	{
-		printf("hsh: expected argument to \"cd\"\n");
+		write(STDOUT_FILENO, "hsh: expected argument to \"cd\"\n", 200);
 	}
 	else
 	{

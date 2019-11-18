@@ -12,7 +12,7 @@ void main_loop(void)
 	int status;
 
 	do {
-		printf("#Prototype_Shell$ ");
+		printf("#Prototype_Shell $:");
 
 		line = read_line_of_comands();
 		args = split_line(line);
@@ -37,8 +37,9 @@ int main(int argc, char *argv[])
 
 	/* Load config files, if any. */
 
-	if (ac > 1 || av == NULL)
+	if (ac < 0 || av == NULL)
 	{
+		write(STDOUT_FILENO, "Error unknown\n", 100);
 		return (1);
 	}
 	/* Run command loop. */

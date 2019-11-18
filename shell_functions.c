@@ -35,7 +35,7 @@ char **split_line(char *line)
 
 	if (tokens == NULL)
 	{
-		printf("hsh: allocation error\n");
+		write(STDOUT_FILENO, "hsh: allocation error\n", 100);
 		exit(EXIT_FAILURE);
 	}
 	token = strtok(line, TOK_DELIM);
@@ -51,7 +51,7 @@ char **split_line(char *line)
 			if (tokens == NULL)
 			{
 				free(tokens_backup);
-				printf("hsh: allocation error\n");
+				write(STDOUT_FILENO, "hsh: allocation error\n", 100);
 				exit(EXIT_FAILURE);
 			}
 		}
