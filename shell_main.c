@@ -1,6 +1,22 @@
 #include "holberton.h"
 
 /**
+ * handle_signa - get the signal.
+ * @sig: the signal.
+ * Return: dont return anything.
+ */
+
+void handle_signal(int sig)
+{
+	write(STDOUT_FILENO, "\n#Prototype_Shell $:", 21);
+	if (sig < 0)
+	{
+		write(STDOUT_FILENO, "Can't read the '^' comand\n", 28);
+		exit(EXIT_FAILURE);
+	}
+}
+
+/**
  * main_loop - Loop that wait the user orders.
  * Return: dont return anything.
  */
@@ -37,12 +53,13 @@ int main(int argc, char *argv[])
 
 	/* Load config files, if any. */
 
-	if (ac < 0 || av == NULL)
+	if (ac > 10 && av == NULL)
 	{
-		write(STDOUT_FILENO, "Error unknown\n", 100);
-		return (1);
+		write(STDOUT_FILENO, "Error unknown | Can't to enter to SHELL\n", 42);
+		exit(EXIT_FAILURE);
 	}
 	/* Run command loop. */
+	signal(SIGINT, handle_signal);
 	main_loop();
 
 	/* Perform any shutdown/cleanup. */

@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 
 char *read_line_of_comands(void);
 char **split_line(char *line);
