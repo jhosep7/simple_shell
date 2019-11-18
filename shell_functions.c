@@ -9,9 +9,23 @@ int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_exit};
 
 char *read_line_of_comands(void)
 {
-	char *line = NULL;
+/*	size_t bufsize = READLINE_BUFSIZE;
+	ssize_t test;
+        char *buffer = malloc(sizeof(char) * bufsize); */
+
+        char *line = NULL;
 	size_t bufsize = READLINE_BUFSIZE;
 	ssize_t test = 0;
+
+/*	test = read(STDIN_FILENO, buffer, (sizeof(char) * (bufsize)));
+
+	printf("TEST %lu", test);
+	if (test < 0)
+	{
+		exit(EXIT_FAILURE);
+	}
+	buffer[test] = '\0';
+	return (buffer); */
 
 	test = getline(&line, &bufsize, stdin);
 	if (test < 0)
@@ -20,6 +34,7 @@ char *read_line_of_comands(void)
 	}
 	return (line);
 }
+
 
 /**
  * split_line - Split a line into tokens (very naively).
@@ -103,7 +118,7 @@ int hsh_launch(char **args)
 int hsh_execute(char **args)
 {
 	char *builtin_str[] = {"cd", "exit"};
-	int i = 0;
+	int i = 0, j = 0, rest;
 
 	if (args[0] == NULL)
 	{
@@ -112,14 +127,19 @@ int hsh_execute(char **args)
 
 	for (i = 0; i < hsh_num_builtins(); i++)
 	{
-		if (args[0] == builtin_str[i])
+		for (j = 0; args[0][j] != '\0' &&
+			     builtin_str[i][j] != '\0'; j++)
+		{
+			rest = args[0][j] - builtin_str[i][j];
+			if (rest == 0)
+			{
+				return ((*builtin_func[i])(args));
+			}
+		}
+/*		if (strcmp(args[0], builtin_str[i]) == 0)
 		{
 			return ((*builtin_func[i])(args));
-		}
-//		if (strcmp(args[0], builtin_str[i]) == 0)
-//		{
-//			return ((*builtin_func[i])(args));
-//		}
+			}*/
 	}
 
 	return (hsh_launch(args));
