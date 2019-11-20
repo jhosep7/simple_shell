@@ -9,23 +9,9 @@ int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_exit};
 
 char *read_line_of_comands(void)
 {
-/*	size_t bufsize = READLINE_BUFSIZE;
-	ssize_t test;
-        char *buffer = malloc(sizeof(char) * bufsize); */
-
-        char *line = NULL;
+	char *line = NULL;
 	size_t bufsize = READLINE_BUFSIZE;
 	ssize_t test = 0;
-
-/*	test = read(STDIN_FILENO, buffer, (sizeof(char) * (bufsize)));
-
-	printf("TEST %lu", test);
-	if (test < 0)
-	{
-		exit(EXIT_FAILURE);
-	}
-	buffer[test] = '\0';
-	return (buffer); */
 
 	test = getline(&line, &bufsize, stdin);
 	if (test < 0)
@@ -136,10 +122,6 @@ int hsh_execute(char **args)
 				return ((*builtin_func[i])(args));
 			}
 		}
-/*		if (strcmp(args[0], builtin_str[i]) == 0)
-		{
-			return ((*builtin_func[i])(args));
-			}*/
 	}
 
 	return (hsh_launch(args));
