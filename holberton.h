@@ -16,10 +16,11 @@
 
 char *read_line_of_comands(void);
 char **split_line(char *line);
-int hsh_execute(char **args);
+int hsh_execute(char **args,char **env);
 int hsh_cd(char **args);
 int hsh_exit(char **args);
-int hsh_launch(char **args);
+int hsh_launch(char **args, char **path);
 int hsh_num_builtins(void);
+char *str_concat(char *str_1, char *str_2);
 
 #endif

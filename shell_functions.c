@@ -65,22 +65,32 @@ char **split_line(char *line)
 /**
  * hsh_launch - Launch a program and wait for it to terminate.
  * @args: Null terminated list of arguments (including program).
+ * @path: the path where the comand exist.
  * Return: Always returns 1, to continue execution.
  */
 
-int hsh_launch(char **args)
+int hsh_launch(char **args, char **path)
 {
 	pid_t pid;
-	int status;
+	char *path_complete = NULL;
+	int status, len = 0, count_args = 0, count_path = 0;
 
 	pid = fork();
 	if (pid == 0)
 	{/* Child process */
-		if (execvp(args[0], args) == -1)
+		path_complete = str_concat(path[count_path], args[count_args]);
+		if (execve(path_complete, args, NULL) == -1)
 		{
 			perror("hsh");
 		}
+		free (path_complete);
 		exit(EXIT_FAILURE);
+
+		/** if (execvp(args[0], args) == -1)
+		{
+			perror("hsh");
+		}
+		exit(EXIT_FAILURE); */
 	}
 	else if (pid < 0)
 	{/* Error forking */
@@ -98,13 +108,15 @@ int hsh_launch(char **args)
 /**
  * hsh_execute - Execute shell built-in or launch program.
  * @args: Null terminated list of arguments.
+ * @env: the sys variable of enviroment.
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 
-int hsh_execute(char **args)
+int hsh_execute(char **args, char **env)
 {
 	char *builtin_str[] = {"cd", "exit"};
 	int i = 0, j = 0, rest;
+	char **path = NULL;
 
 	if (args[0] == NULL)
 	{
@@ -123,6 +135,6 @@ int hsh_execute(char **args)
 			}
 		}
 	}
-
-	return (hsh_launch(args));
+	path = split_path(env);
+	return (hsh_launch(args, path));
 }

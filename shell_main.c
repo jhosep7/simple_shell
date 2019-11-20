@@ -21,7 +21,7 @@ void handle_signal(int sig)
  * Return: dont return anything.
  */
 
-void main_loop(void)
+void main_loop(char **env)
 {
 	char *line;
 	char **args;
@@ -32,7 +32,7 @@ void main_loop(void)
 
 		line = read_line_of_comands();
 		args = split_line(line);
-		status = hsh_execute(args);
+		status = hsh_execute(args, env);
 
 		free(line);
 		free(args);
@@ -46,7 +46,7 @@ void main_loop(void)
  * Return: status of the code.
  */
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char **env)
 {
 	int ac = argc;
 	char **av = argv;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	}
 	/* Run command loop. */
 	signal(SIGINT, handle_signal);
-	main_loop();
+	main_loop(env);
 
 	/* Perform any shutdown/cleanup. */
 
