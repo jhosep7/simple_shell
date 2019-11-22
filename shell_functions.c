@@ -25,75 +25,66 @@ char *read_line_of_comands(void)
 /**
  * split_line - Split a line into tokens (very naively).
  * @line: The line comands.
+ * @env: sys variable.
  * Return: Null-terminated array of tokens.
  */
 
 char **split_line(char *line)
 {
 	int bufsize = TOK_BUFSIZE, position = 0;
-	char **tokens = malloc(bufsize * sizeof(char *));
-	char *token, **tokens_backup;
+	char **tokens_args = malloc(bufsize * sizeof(char *));
+	char *token_args, **tokens_backup;
 
-	if (tokens == NULL)
+	if (tokens_args == NULL)
 	{
 		write(STDOUT_FILENO, "hsh: allocation error\n", 100);
 		exit(EXIT_FAILURE);
 	}
-	token = strtok(line, TOK_DELIM);
-	while (token != NULL)
+	token_args = strtok(line, TOK_DELIM);
+	while (token_args != NULL)
 	{
-		tokens[position] = token;
+		tokens_args[position] = token_args;
 		position++;
 		if (position >= bufsize)
 		{
 			bufsize += TOK_BUFSIZE;
-			tokens_backup = tokens;
-			tokens = realloc(tokens, bufsize * sizeof(char *));
-			if (tokens == NULL)
+			tokens_backup = tokens_args;
+			tokens_args = realloc(tokens_args, bufsize * sizeof(char *));
+			if (tokens_args == NULL)
 			{
 				free(tokens_backup);
 				write(STDOUT_FILENO, "hsh: allocation error\n", 100);
 				exit(EXIT_FAILURE);
 			}
 		}
-		token = strtok(NULL, TOK_DELIM);
+		token_args = strtok(NULL, TOK_DELIM);
 	}
-	tokens[position] = NULL;
-	return (tokens);
+	tokens_args[position] = NULL;
+	return (tokens_args);
 }
 
 /**
  * hsh_launch - Launch a program and wait for it to terminate.
  * @args: Null terminated list of arguments (including program).
- * @path: the path where the comand exist.
  * Return: Always returns 1, to continue execution.
  */
 
-int hsh_launch(char **args, char **path)
+int hsh_launch(char *path, char **args)
 {
 	pid_t pid;
-	char *path_complete = NULL;
-	int status, len = 0, count_args = 0, count_path = 0;
+	int status;
 
 	pid = fork();
 	if (pid == 0)
 	{/* Child process */
-		path_complete = str_concat(path[count_path], args[count_args]);
-		if (execve(path_complete, args, NULL) == -1)
+		if (execve(path, args, NULL) == -1)
 		{
 			perror("hsh");
 		}
-		free (path_complete);
 		exit(EXIT_FAILURE);
-
-		/** if (execvp(args[0], args) == -1)
-		{
-			perror("hsh");
-		}
-		exit(EXIT_FAILURE); */
 	}
 	else if (pid < 0)
-	{/* Error forking */
+	{
 		perror("hsh");
 	}
 	else
@@ -108,33 +99,25 @@ int hsh_launch(char **args, char **path)
 /**
  * hsh_execute - Execute shell built-in or launch program.
  * @args: Null terminated list of arguments.
- * @env: the sys variable of enviroment.
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 
-int hsh_execute(char **args, char **env)
+int hsh_execute(char *path, char **args)
 {
 	char *builtin_str[] = {"cd", "exit"};
-	int i = 0, j = 0, rest;
-	char **path = NULL;
+	int count = 0;
 
 	if (args[0] == NULL)
 	{
 		return (1);
 	}
 
-	for (i = 0; i < hsh_num_builtins(); i++)
+	for (count = 0; count < hsh_num_builtins(); count++)
 	{
-		for (j = 0; args[0][j] != '\0' &&
-			     builtin_str[i][j] != '\0'; j++)
+		if (_strcmp(args[0], builtin_str[count]) == 0)
 		{
-			rest = args[0][j] - builtin_str[i][j];
-			if (rest == 0)
-			{
-				return ((*builtin_func[i])(args));
-			}
+			return ((*builtin_func[count])(args));
 		}
 	}
-	path = split_path(env);
-	return (hsh_launch(args, path));
+	return (hsh_launch(path, args));
 }
