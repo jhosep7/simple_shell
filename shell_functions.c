@@ -26,7 +26,6 @@ char *read_line_of_comands(void)
 /**
  * split_line - Split a line into tokens (very naively).
  * @line: The line comands.
- * @env: sys variable.
  * Return: Null-terminated array of tokens.
  */
 
@@ -67,6 +66,7 @@ char **split_line(char *line)
 /**
  * hsh_launch - Launch a program and wait for it to terminate.
  * @args: Null terminated list of arguments (including program).
+ * @path: Path.
  * Return: Always returns 1, to continue execution.
  */
 
@@ -100,6 +100,7 @@ int hsh_launch(char *path, char **args)
 /**
  * hsh_execute - Execute shell built-in or launch program.
  * @args: Null terminated list of arguments.
+ * @path: Path.
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 

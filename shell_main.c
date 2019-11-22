@@ -8,7 +8,7 @@
 
 void handle_signal(int sig)
 {
-	write(STDOUT_FILENO, "\n#Prototype_Shell $:", 21);
+	write(STDOUT_FILENO, "\n#Prototype_Shell $: ", 23);
 	if (sig < 0)
 	{
 		write(STDOUT_FILENO, "Can't read the '^' comand\n", 28);
@@ -22,14 +22,14 @@ void handle_signal(int sig)
  * Return: dont return anything.
  */
 
-void main_loop(char **env)
+void main_loop(int ac, char *av[], char **env)
 {
-	char *line;
+	char *line, *argv;
 	char **args, **tokens_path, *path_cat = NULL;
 	int status;
 
 	do {
-		printf("#Prototype_Shell $: ");
+		write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
 
 		line = read_line_of_comands();
 		args = split_line(line);
@@ -64,9 +64,10 @@ int main(int argc, char *argv[], char **env)
 		write(STDOUT_FILENO, "Error unknown | Can't to enter to SHELL\n", 42);
 		exit(EXIT_FAILURE);
 	}
+	//signal(SIGINT, handle_signal);
+
 	/* Run command loop. */
-	signal(SIGINT, handle_signal);
-	main_loop(env);
+	main_loop(argc, argv, env);
 
 	/* Perform any shutdown/cleanup. */
 
