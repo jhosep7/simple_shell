@@ -16,6 +16,7 @@ char *read_line_of_comands(void)
 	test = getline(&line, &bufsize, stdin);
 	if (test < 0)
 	{
+		write(STDOUT_FILENO, "\n", 3);
 		exit(EXIT_FAILURE);
 	}
 	return (line);

@@ -1,6 +1,37 @@
 #include "holberton.h"
 
 /**
+ * _strdup - check the code for Holberton School students.
+ * @str: Lol
+ * Return: Always 0.
+ */
+
+char *_strdup(char *str)
+{
+	char *Arr = NULL;
+	int x, y;
+
+	if (str == NULL)
+	{
+		return (NULL);
+	}
+
+	for (x = 0; str[x] != '\0'; x++)
+	{
+	}
+	x++;
+	Arr = malloc(sizeof(char) * x);
+	if (Arr == NULL)
+	{
+		return (NULL);
+	}
+	for (y = 0; y < x; y++)
+	{
+		Arr[y] = str[y];
+	}
+	return (Arr);
+}
+/**
  * str_concat - concatenate two strings.
  * @str_1: First string
  * @str_2: Second string
@@ -88,10 +119,10 @@ int _strcmp(char *s1, char *s2)
 
 char **split_path(char *env[])
 {
-	int count_env, count = 0, cmp = 0, aux;
+	int count_env, count = 0, cmp = 0, aux, dup = 0;
 	char *path = "PATH";
 	char *token = NULL, *token_path = NULL;
-	char **token_path_split = NULL, **enviroment = NULL;
+	char **token_path_split = NULL, **enviroment = malloc(128 * 8);
 
 	token_path_split = malloc(64 * sizeof(char *));
 	if (token_path_split == NULL)
@@ -99,8 +130,11 @@ char **split_path(char *env[])
 		write(STDOUT_FILENO, "hsh: allocation error\n", 24);
 		exit(EXIT_FAILURE);
 	}
-	enviroment = env;
-	/* EL PROBLEMA ESTA AQUI, en resetear el ENV */
+	while (env[dup] != NULL)
+	{
+		enviroment[dup] = _strdup(env[dup]);
+		dup++;
+	}
 	for (count_env = 0; enviroment[count_env] != NULL; count_env++)
 	{
 		token = strtok(enviroment[count_env], "=");
