@@ -12,23 +12,16 @@ char *_strdup(char *str)
 	int x, y;
 
 	if (str == NULL)
-	{
-		return (NULL);
-	}
+	{return (NULL);	}
 
 	for (x = 0; str[x] != '\0'; x++)
-	{
-	}
+	{; }
 	x++;
 	Arr = malloc(sizeof(char) * x);
 	if (Arr == NULL)
-	{
-		return (NULL);
-	}
+	{return (NULL);	}
 	for (y = 0; y < x; y++)
-	{
-		Arr[y] = str[y];
-	}
+	{Arr[y] = str[y]; }
 	return (Arr);
 }
 /**
@@ -171,20 +164,27 @@ char *path_concat(char **args, char **path)
 	char *path_complete = NULL;
 	int len = 0, ok_access = 0, count_access = 0;
 
-	while (path[len] != NULL)
-	{/* Count all Tokens of PATH */
-		len++;
-	}
-	while (path[count_access] != NULL)
+	if (access(args[0], X_OK) == 0)
 	{
-		path_complete = str_concat(path[count_access], "/");
-		path_complete = str_concat(path_complete, args[0]);
-		ok_access = access(path_complete, X_OK);
+		path_complete = args[0];
+	}
+	else
+	{
+		while (path[len] != NULL)
+		{/* Count all Tokens of PATH */
+			len++;
+		}
+		while (path[count_access] != NULL)
+		{
+			path_complete = str_concat(path[count_access], "/");
+			path_complete = str_concat(path_complete, args[0]);
+			ok_access = access(path_complete, X_OK);
 		if (ok_access == 0)
 		{
 			return (path_complete);
 		}
 		count_access++;
+		}
 	}
 	return (path_complete);
 }
