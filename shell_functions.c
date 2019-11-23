@@ -1,6 +1,6 @@
 #include "holberton.h"
 
-int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_exit};
+int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_exit, &hsh_env};
 
 /**
  * read_line_of_comands - Function that read all comands that user in.
@@ -16,7 +16,7 @@ char *read_line_of_comands(void)
 	test = getline(&line, &bufsize, stdin);
 	if (test < 0)
 	{
-		write(STDOUT_FILENO, "\n", 3);
+		write(STDOUT_FILENO, "\n", 1);
 		exit(EXIT_FAILURE);
 	}
 	return (line);
@@ -37,7 +37,7 @@ char **split_line(char *line)
 
 	if (tokens_args == NULL)
 	{
-		write(STDOUT_FILENO, "hsh: allocation error\n", 100);
+		write(STDOUT_FILENO, "hsh: allocation error\n", 23);
 		exit(EXIT_FAILURE);
 	}
 	token_args = strtok(line, TOK_DELIM);
@@ -53,7 +53,7 @@ char **split_line(char *line)
 			if (tokens_args == NULL)
 			{
 				free(tokens_backup);
-				write(STDOUT_FILENO, "hsh: allocation error\n", 100);
+				write(STDOUT_FILENO, "hsh: allocation error\n", 23);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -106,7 +106,7 @@ int hsh_launch(char *path, char **args)
 
 int hsh_execute(char *path, char **args)
 {
-	char *builtin_str[] = {"cd", "exit"};
+	char *builtin_str[] = {"cd", "exit", "env"};
 	int count = 0;
 
 	if (args[0] == NULL)

@@ -8,7 +8,7 @@
 
 void handle_signal(int sig)
 {
-	write(STDOUT_FILENO, "\n#Prototype_Shell $: ", 23);
+	write(STDOUT_FILENO, "\n#Prototype_Shell $: ", 22);
 	if (sig < 0)
 	{
 		write(STDOUT_FILENO, "Can't read the '^' comand\n", 28);
@@ -22,11 +22,11 @@ void handle_signal(int sig)
  * Return: dont return anything.
  */
 
-void main_loop(int ac, char *av[], char **env)
+void main_loop(char **env)
 {
-	char *line, *argv;
+	char *line = NULL;
 	char **args, **tokens_path, *path_cat = NULL;
-	int status;
+	int status = 0;
 
 	do {
 		write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
@@ -37,9 +37,9 @@ void main_loop(int ac, char *av[], char **env)
 		path_cat = path_concat(args, tokens_path);
 		status = hsh_execute(path_cat, args);
 
-		/* Provar un loop, para armar de nuevo el ENV */
 		free(line);
 		free(args);
+		free(tokens_path);
 		free(path_cat);
 	} while (status);
 }
@@ -54,22 +54,40 @@ void main_loop(int ac, char *av[], char **env)
 
 int main(int argc, char *argv[], char **env)
 {
-	int ac = argc;
-	char **av = argv;
+	int ac = argc, count = 0;
+	char *av = NULL;
+	char **args, **tokens_path, *path_cat = NULL;
 
-	/* Load config files, if any. */
-
-	if (ac > 10 && av == NULL)
+	av = malloc(TOK_BUFSIZE * sizeof(char *));
+	if (av == NULL)
 	{
-		write(STDOUT_FILENO, "Error unknown | Can't to enter to SHELL\n", 42);
-		exit(EXIT_FAILURE);
+		return (0);
 	}
-	//signal(SIGINT, handle_signal);
+	if (ac > 1)
+	{
+		while (argv[count] != NULL)
+		{
+			av = str_concat(av, argv[count + 1]);
+			av = str_concat(av, " ");
+			count++;
+		}
+		args = split_line(av);
+		tokens_path = split_path(env);
+		path_cat = path_concat(args, tokens_path);
+		hsh_execute(path_cat, args);
 
-	/* Run command loop. */
-	main_loop(argc, argv, env);
+		count = 0;
+		free(av);
+		free(args);
+		free(path_cat);
+		ac = -10;
+	}
 
+	if (ac == -10 || ac == 1)
+	{
+		//signal(SIGINT, handle_signal);
+		main_loop(env);
+	}
 	/* Perform any shutdown/cleanup. */
-
-	return (EXIT_SUCCESS);
+	return (0);
 }

@@ -3,6 +3,7 @@
 
 #define READLINE_BUFSIZE 1024
 #define TOK_BUFSIZE 64
+#define PATH_BUFSIZE 1024
 #define TOK_DELIM " \t\r\n\a"
 
 #include <sys/wait.h>
@@ -19,6 +20,7 @@ char **split_line(char *line);
 int hsh_execute(char *args, char **path);
 int hsh_cd(char **args);
 int hsh_exit(char **args);
+int hsh_env(char **args);
 int hsh_launch(char *args, char **path);
 int hsh_num_builtins(void);
 char *str_concat(char *str_1, char *str_2);
