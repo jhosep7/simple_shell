@@ -26,13 +26,22 @@ void main_loop(char **env)
 {
 	char *line = NULL;
 	char **args, **tokens_path, *path_cat = NULL;
-	int status = 0;
+	int status = 0, x = 0;
 
 	do {
 		write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
 
 		line = read_line_of_comands();
 		args = split_line(line);
+		if (_strcmp(args[0], "env") == 0)
+		{
+			while (env[x] != NULL)
+			{
+				write(STDOUT_FILENO, env[x], _strlen(env[x]));
+				write(STDOUT_FILENO, "\n", sizeof(char));
+				x++;
+			}
+		}
 		tokens_path = split_path(env);
 		path_cat = path_concat(args, tokens_path);
 		status = hsh_execute(path_cat, args);
@@ -40,7 +49,7 @@ void main_loop(char **env)
 		free(line);
 		free(args);
 		free(tokens_path);
-		free(path_cat);
+		/* free(path_cat); */
 	} while (status);
 }
 
@@ -54,7 +63,7 @@ void main_loop(char **env)
 
 int main(int argc, char *argv[], char **env)
 {
-	int ac = argc, count = 0;
+	int ac = argc, count;
 	char *av = NULL;
 	char **args, **tokens_path, *path_cat = NULL;
 
@@ -65,18 +74,17 @@ int main(int argc, char *argv[], char **env)
 	}
 	if (ac > 1)
 	{
-		av = str_concat(argv[0], " ");
-		while (argv[count] != NULL)
+		count = 0;
+		av = str_concat(_strdup(argv[0]), " ");
+		while (argv[count] != NULL && count < 3)
 		{
-			av = str_concat(av, argv[count]);
+			av = str_concat(av, argv[count + 1]);
 			av = str_concat(av, " ");
-			write(STDOUT_FILENO, argv[count], _strlen(argv[count]));
 			count++;
 		}
 		args = split_line(av);
 		tokens_path = split_path(env);
 		path_cat = path_concat(args, tokens_path);
-		/* hsh_execute(path_cat, args); */
 		if (execve(path_cat, args, NULL) == -1)
 		{
 			write(STDOUT_FILENO, args[0], _strlen(args[0]));
@@ -86,16 +94,12 @@ int main(int argc, char *argv[], char **env)
 			write(STDOUT_FILENO, args[1], _strlen(args[1]));
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, "command not found\n", 19);
-			/* perror("hsh"); */
 		}
-		count = 0;
-		free(av), free(args), free(path_cat);
-		ac = -10;
-		return (0);
+		free(av), free(args), free(path_cat), ac = -10;
 	}
 	if (ac == -10 || ac == 1)
 	{
-		/* signal(SIGINT, handle_signal); */
+		signal(SIGINT, handle_signal);
 		main_loop(env);
 	}
 	return (0);

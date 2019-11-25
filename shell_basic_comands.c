@@ -23,33 +23,9 @@ int _strlen(char *string)
 
 int hsh_num_builtins(void)
 {
-	char *builtin_str[] = {"cd", "exit", "env"};
+	char *builtin_str[] = {"cd", "exit"};
 
 	return (sizeof(builtin_str) / sizeof(char *));
-}
-
-/**
- * hsh_env - Print the enviroment.
- * @args: List of args.  args[0] is "cd".  args[1] is the directory.
- * Return: Always returns 1, to continue executing.
- */
-
-int hsh_env(char **args)
-{
-	int x = 0;
-
-	if (args == NULL)
-	{
-		return (1);
-	}
-	while (__environ[x] != NULL)
-	{
-		write(STDOUT_FILENO, __environ[x], _strlen(__environ[x]));
-		write(STDOUT_FILENO, "\n", sizeof(char));
-		x++;
-	}
-	x = 0;
-	return (1);
 }
 
 /**

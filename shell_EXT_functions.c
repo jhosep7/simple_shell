@@ -147,7 +147,8 @@ char **split_path(char *env[])
 	{
 		free(enviroment[frees]), frees++;
 	}
-	free(enviroment), token_path_split[count] = NULL;
+	free(enviroment);
+	token_path_split[count] = NULL;
 	return (token_path_split);
 }
 
@@ -163,7 +164,7 @@ char *path_concat(char **args, char **path)
 	char *path_complete = NULL;
 	int len = 0, ok_access = 0, count_access = 0;
 
-	if (access(args[0], X_OK) == 0)
+	if (access(args[0], X_OK) == 0 && args[0][0] == '/')
 	{
 		path_complete = args[0];
 	}
@@ -178,11 +179,11 @@ char *path_concat(char **args, char **path)
 			path_complete = str_concat(path[count_access], "/");
 			path_complete = str_concat(path_complete, args[0]);
 			ok_access = access(path_complete, X_OK);
-		if (ok_access == 0)
-		{
-			return (path_complete);
-		}
-		count_access++;
+			if (ok_access == 0)
+			{
+				return (path_complete);
+			}
+			count_access++;
 		}
 	}
 	return (path_complete);

@@ -1,6 +1,6 @@
 #include "holberton.h"
 
-int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_exit, &hsh_env};
+int (*builtin_func[]) (char **args) = {&hsh_cd, &hsh_exit};
 
 /**
  * read_line_of_comands - Function that read all comands that user in.
@@ -110,7 +110,7 @@ int hsh_launch(char *path, char **args)
 
 int hsh_execute(char *path, char **args)
 {
-	char *builtin_str[] = {"cd", "exit", "env"};
+	char *builtin_str[] = {"cd", "exit"};
 	int count = 0;
 
 	if (args[0] == NULL)
