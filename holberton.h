@@ -27,5 +27,6 @@ char *str_concat(char *str_1, char *str_2);
 char **split_path(char *env[]);
 int _strcmp(char *s1, char *s2);
 char *path_concat(char **args, char **path);
+int _strlen(char *string);
 
 #endif

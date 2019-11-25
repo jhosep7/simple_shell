@@ -1,6 +1,22 @@
 #include "holberton.h"
 
 /**
+ * _strlen - calculate the length of String
+ * @string: String.
+ * Return: return the length
+ */
+
+int _strlen(char *string)
+{
+	int k;
+
+	for (k = 0; string[k] != '\0'; k++)
+	{}
+
+	return (k);
+}
+
+/**
  * hsh_num_builtins - change directory.
  * Return: Always returns 1, to continue executing.
  */
@@ -20,12 +36,19 @@ int hsh_num_builtins(void)
 
 int hsh_env(char **args)
 {
+	int x = 0;
+
 	if (args == NULL)
 	{
 		return (1);
 	}
-	write(STDOUT_FILENO, __environ[0], (sizeof(__environ) * 2048));
-	write(STDOUT_FILENO, "\n", 1);
+	while (__environ[x] != NULL)
+	{
+		write(STDOUT_FILENO, __environ[x], _strlen(__environ[x]));
+		write(STDOUT_FILENO, "\n", sizeof(char));
+		x++;
+	}
+	x = 0;
 	return (1);
 }
 
@@ -39,7 +62,7 @@ int hsh_cd(char **args)
 {
 	if (args[1] == NULL)
 	{
-		write(STDOUT_FILENO, "hsh: expected argument to \"cd\"\n", 200);
+		write(STDOUT_FILENO, "hsh: expected argument to \"cd\"\n", 34);
 	}
 	else
 	{

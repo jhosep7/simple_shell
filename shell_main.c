@@ -65,29 +65,38 @@ int main(int argc, char *argv[], char **env)
 	}
 	if (ac > 1)
 	{
+		av = str_concat(argv[0], " ");
 		while (argv[count] != NULL)
 		{
-			av = str_concat(av, argv[count + 1]);
+			av = str_concat(av, argv[count]);
 			av = str_concat(av, " ");
+			write(STDOUT_FILENO, argv[count], _strlen(argv[count]));
 			count++;
 		}
 		args = split_line(av);
 		tokens_path = split_path(env);
 		path_cat = path_concat(args, tokens_path);
-		hsh_execute(path_cat, args);
-
+		/* hsh_execute(path_cat, args); */
+		if (execve(path_cat, args, NULL) == -1)
+		{
+			write(STDOUT_FILENO, args[0], _strlen(args[0]));
+			write(STDOUT_FILENO, ": ", 2);
+			write(STDOUT_FILENO, "1", 1);
+			write(STDOUT_FILENO, ": ", 2);
+			write(STDOUT_FILENO, args[1], _strlen(args[1]));
+			write(STDOUT_FILENO, ": ", 2);
+			write(STDOUT_FILENO, "command not found\n", 19);
+			/* perror("hsh"); */
+		}
 		count = 0;
-		free(av);
-		free(args);
-		free(path_cat);
+		free(av), free(args), free(path_cat);
 		ac = -10;
+		return (0);
 	}
-
 	if (ac == -10 || ac == 1)
 	{
-		//signal(SIGINT, handle_signal);
+		/* signal(SIGINT, handle_signal); */
 		main_loop(env);
 	}
-	/* Perform any shutdown/cleanup. */
 	return (0);
 }

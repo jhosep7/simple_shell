@@ -73,16 +73,20 @@ char **split_line(char *line)
 int hsh_launch(char *path, char **args)
 {
 	pid_t pid;
-	int status;
+	int status, gen_count = 0;
 
 	pid = fork();
 	if (pid == 0)
 	{/* Child process */
+		gen_count++;
 		if (execve(path, args, NULL) == -1)
 		{
-			perror("hsh");
+			write(STDOUT_FILENO, args[0], _strlen(args[0]));
+			write(STDOUT_FILENO, ": ", 2);
+			write(STDOUT_FILENO, "command not found\n", 19);
+			return (0);
 		}
-		exit(EXIT_FAILURE);
+		return (1);
 	}
 	else if (pid < 0)
 	{
