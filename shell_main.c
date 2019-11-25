@@ -26,25 +26,16 @@ void main_loop(char **env)
 {
 	char *line = NULL;
 	char **args, **tokens_path, *path_cat = NULL;
-	int status = 0, x = 0;
+	int status = 0;
 
 	do {
 		write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
 
 		line = read_line_of_comands();
 		args = split_line(line);
-		if (_strcmp(args[0], "env") == 0)
-		{
-			while (env[x] != NULL)
-			{
-				write(STDOUT_FILENO, env[x], _strlen(env[x]));
-				write(STDOUT_FILENO, "\n", sizeof(char));
-				x++;
-			}
-		}
 		tokens_path = split_path(env);
 		path_cat = path_concat(args, tokens_path);
-		status = hsh_execute(path_cat, args);
+		status = hsh_execute(path_cat, args, env);
 
 		free(line);
 		free(args);

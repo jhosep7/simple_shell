@@ -75,12 +75,16 @@ int hsh_launch(char *path, char **args)
 	pid_t pid;
 	int status, gen_count = 0;
 
+	gen_count++;
 	pid = fork();
 	if (pid == 0)
 	{/* Child process */
-		gen_count++;
 		if (execve(path, args, NULL) == -1)
 		{
+			write(STDOUT_FILENO, "./hsh", 6);
+			write(STDOUT_FILENO, ": ", 2);
+			write(STDOUT_FILENO, "2", 1);
+			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, args[0], _strlen(args[0]));
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, "command not found\n", 19);
@@ -105,17 +109,27 @@ int hsh_launch(char *path, char **args)
  * hsh_execute - Execute shell built-in or launch program.
  * @args: Null terminated list of arguments.
  * @path: Path.
+ * @env: sys variable.
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 
-int hsh_execute(char *path, char **args)
+int hsh_execute(char *path, char **args, char **env)
 {
 	char *builtin_str[] = {"cd", "exit"};
-	int count = 0;
+	int count = 0, x = 0;
 
 	if (args[0] == NULL)
 	{
 		return (1);
+	}
+	if (_strcmp(args[0], "env") == 0)
+	{
+		while (env[x] != NULL)
+		{
+			write(STDOUT_FILENO, env[x], _strlen(env[x]));
+			write(STDOUT_FILENO, "\n", sizeof(char));
+			x++;
+		}
 	}
 
 	for (count = 0; count < hsh_num_builtins(); count++)
