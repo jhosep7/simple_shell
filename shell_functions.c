@@ -29,7 +29,7 @@ char *read_line_of_comands(void)
  * Return: Null-terminated array of tokens.
  */
 
-char **split_line(char *line)
+char **cutting_line(char *line)
 {
 	int bufsize = TOK_BUFSIZE, position = 0;
 	char **tokens_args = malloc(bufsize * sizeof(char *));
@@ -45,7 +45,7 @@ char **split_line(char *line)
 	{
 		tokens_args[position] = token_args;
 		position++;
-		if (position >= bufsize)
+ 		if (position >= bufsize)
 		{
 			bufsize += TOK_BUFSIZE;
 			tokens_backup = tokens_args;
@@ -70,20 +70,19 @@ char **split_line(char *line)
  * Return: Always returns 1, to continue execution.
  */
 
-int hsh_launch(char *path, char **args)
+int hsh_launch(char *path, char **args, int count, char *exe_file)
 {
 	pid_t pid;
-	int status, gen_count = 0;
+	int status;
 
-	gen_count++;
 	pid = fork();
 	if (pid == 0)
 	{/* Child process */
 		if (execve(path, args, NULL) == -1)
 		{
-			write(STDOUT_FILENO, "./hsh", 6);
+			write(STDOUT_FILENO, exe_file, _strlen(exe_file));
 			write(STDOUT_FILENO, ": ", 2);
-			write(STDOUT_FILENO, "2", 1);
+			print_numbers(count);
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, args[0], _strlen(args[0]));
 			write(STDOUT_FILENO, ": ", 2);
@@ -113,10 +112,10 @@ int hsh_launch(char *path, char **args)
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 
-int hsh_execute(char *path, char **args, char **env)
+int hsh_execute(char *path, char **args, char **env, int count, char *exe_file)
 {
 	char *builtin_str[] = {"cd", "exit"};
-	int count = 0, x = 0;
+	int count_builtin = 0, x = 0;
 
 	if (args[0] == NULL)
 	{
@@ -132,12 +131,12 @@ int hsh_execute(char *path, char **args, char **env)
 		}
 	}
 
-	for (count = 0; count < hsh_num_builtins(); count++)
+	for (count_builtin = 0; count_builtin < hsh_num_builtins(); count_builtin++)
 	{
-		if (_strcmp(args[0], builtin_str[count]) == 0)
+		if (_strcmp(args[0], builtin_str[count_builtin]) == 0)
 		{
-			return ((*builtin_func[count])(args));
+			return ((*builtin_func[count_builtin])(args));
 		}
 	}
-	return (hsh_launch(path, args));
+	return (hsh_launch(path, args, count, exe_file));
 }
