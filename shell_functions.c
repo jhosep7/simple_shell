@@ -33,7 +33,7 @@ char **cutting_line(char *line)
 {
 	int bufsize = TOK_BUFSIZE, position = 0;
 	char **tokens_args = malloc(bufsize * sizeof(char *));
-	char *token_args, **tokens_backup;
+	char *token_args;
 
 	if (tokens_args == NULL)
 	{
@@ -45,18 +45,6 @@ char **cutting_line(char *line)
 	{
 		tokens_args[position] = token_args;
 		position++;
-		if (position >= bufsize)
-		{
-			bufsize += TOK_BUFSIZE;
-			tokens_backup = tokens_args;
-			tokens_args = realloc(tokens_args, bufsize * sizeof(char *));
-			if (tokens_args == NULL)
-			{
-				free(tokens_backup);
-				write(STDOUT_FILENO, "hsh: allocation error\n", 23);
-				exit(EXIT_FAILURE);
-			}
-		}
 		token_args = strtok(NULL, TOK_DELIM);
 	}
 	tokens_args[position] = NULL;
