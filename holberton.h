@@ -20,7 +20,7 @@ char **cutting_line(char *line);
 int hsh_execute(char *args, char **path, char **env, int count, char *exe_file);
 int hsh_cd(char **args);
 int hsh_exit(char **args);
-int hsh_env(char **args);
+int hsh_help(char **args);
 int hsh_launch(char *args, char **path, int count, char *exe_file);
 int hsh_num_builtins(void);
 char *str_concat(char *str_1, char *str_2);
@@ -31,5 +31,12 @@ int _strlen(char *string);
 char *_strdup(char *str);
 int print_numbers(int our_digit);
 int _our_write(char c);
+
+/* Help Mesage */
+int helpExit(void);
+int helpCD(void);
+int helpEnv(void);
+int helpPWD(void);
+int helpEcho(void);
 
 #endif

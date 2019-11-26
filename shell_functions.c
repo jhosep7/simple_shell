@@ -1,6 +1,6 @@
 #include "holberton.h"
 
-int (*builtin_func[]) (char **args) = {&hsh_cd, &hsh_exit};
+int (*builtin_func[]) (char **args) = {&hsh_cd, &hsh_exit, &hsh_help};
 
 /**
  * read_line_of_comands - Function that read all comands that user in.
@@ -24,7 +24,7 @@ char *read_line_of_comands(void)
 
 
 /**
- * split_line - Split a line into tokens (very naively).
+ * cutting_line - Split a line into tokens (very naively).
  * @line: The line comands.
  * Return: Null-terminated array of tokens.
  */
@@ -45,7 +45,7 @@ char **cutting_line(char *line)
 	{
 		tokens_args[position] = token_args;
 		position++;
- 		if (position >= bufsize)
+		if (position >= bufsize)
 		{
 			bufsize += TOK_BUFSIZE;
 			tokens_backup = tokens_args;
@@ -67,6 +67,8 @@ char **cutting_line(char *line)
  * hsh_launch - Launch a program and wait for it to terminate.
  * @args: Null terminated list of arguments (including program).
  * @path: Path.
+ * @count: general counter
+ * @exe_file: name of the executable file of shell [hsh].
  * Return: Always returns 1, to continue execution.
  */
 
@@ -109,12 +111,14 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
  * @args: Null terminated list of arguments.
  * @path: Path.
  * @env: sys variable.
+ * @exe_file: name of the executable file of shell [hsh].
+ * @count: General counter.
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 
 int hsh_execute(char *path, char **args, char **env, int count, char *exe_file)
 {
-	char *builtin_str[] = {"cd", "exit"};
+	char *builtin_str[] = {"cd", "exit", "help"};
 	int count_builtin = 0, x = 0;
 
 	if (args[0] == NULL)

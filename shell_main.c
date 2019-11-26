@@ -19,6 +19,8 @@ void handle_signal(int sig)
 /**
  * main_loop - Loop that wait the user orders.
  * @env: sys variable.
+ * @exe_file: name of the executable file of shell [hsh].
+ * @ac: arguments counter.
  * Return: dont return anything.
  */
 
@@ -60,7 +62,7 @@ void main_loop(char **env, char *exe_file, int ac)
 int main(int argc, char **argv, char **env)
 {
 	int ac = argc, count, gen_count = 1;
-	char *av = NULL/* , *exe_file = NULL */;
+	char *av = NULL;
 	char **args, **tokens_path, *path_cat = NULL;
 
 	av = malloc(TOK_BUFSIZE * sizeof(char *));
@@ -71,7 +73,6 @@ int main(int argc, char **argv, char **env)
 	if (ac > 1)
 	{
 		count = 0;
-		/* exe_file = _strdup(argv[0]); */
 		while (argv[count] != NULL)
 		{
 			av = str_concat(av, argv[count + 1]);
@@ -95,7 +96,7 @@ int main(int argc, char **argv, char **env)
 	}
 	if (ac == -10 || ac == 1)
 	{
-		//signal(SIGINT, handle_signal);
+		signal(SIGINT, handle_signal);
 		main_loop(env, argv[0], ac);
 	}
 	return (0);
