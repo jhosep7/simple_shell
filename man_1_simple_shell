@@ -10,10 +10,45 @@ Later excecutes commands based on the input, then the local
 directory and the PATH are seeked.
 Depending of the application, the function prints to either
 stdout(standard output) or stderr(standard error).
-.SH EXAMPLE USAGE
-cd -
 
-ls -l
+The shell is a program that reads lines from either a file or the terminal,
+interprets them, and  executes other commands. Commands can be typed
+directly to the running shell.
+
+.SH EXAMPLE USAGE
+Typically the shell will be run in interactive mode where input is accepted from
+the keyboard.
+
+.SH COMMANDS
+.IP pwd
+The value of the current working directory.
+pwd: pwd [-LP]
+
+.IP cd
+Change the shell working directory.
+cd: cd [-L|[-P [-e]] [-@]] [dir]
+
+.IP ls
+List  information  about  the FILEs (the current directory by
+default).  Sort entries alphabetically if none  of  -cftuvSUX
+nor --sort is specified.
+ls: ls [OPTION]... [FILE]...
+
+.IP cat
+Concatenate FILE(s) to standard output.
+cat: cat [OPTION]... [FILE]...
+
+.IP env
+Set each NAME to VALUE in the environment and run COMMAND.
+env: env [OPTION]... [-] [NAME=VALUE]... [COMMAND [ARG]...]
+
+.IP echo
+Arguments are printed on the standard output.
+
+.IP exit
+Shell process is terminated, the return value of the subsequent command
+is used as the exit status. May be used with a second argument for a
+specific return value
 
 .SH BUGS
 No Bugs currently.
