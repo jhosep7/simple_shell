@@ -21,7 +21,7 @@ un operador y el sistema operativo.
 |  `shell_functions.c` |  Commands to read-tokenize and excecute|
 |  `shell_basic_comands.c` |  Built-in functions	|
 |  `shell_EXT_functions.c`	|  Our own functions|
-|  `HelpMSG.c`  |  appended to help function	 |
+|  `helpmsg.c`  |  appended to help function	 |
 
 ### Example
 This shell takes the input as a standard Unix SHELL.
