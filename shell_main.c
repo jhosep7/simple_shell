@@ -36,13 +36,9 @@ void main_loop(char **env, char *exe_file, int ac)
 	}
 	do {
 		if (isatty(fileno(stdin)) == 0)
-		{
-			/*  */
-		}
+		{/* Nothing */ }
 		else
-		{
-			write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
-		}
+		{write(STDOUT_FILENO, "#Prototype_Shell $: ", 21); }
 
 		line = read_line_of_comands();
 		args = cutting_line(line);
@@ -54,6 +50,8 @@ void main_loop(char **env, char *exe_file, int ac)
 		free(args);
 		free(tokens_path);
 		gen_count++;
+		if (isatty(fileno(stdin)) == 0)
+		{break; }
 	} while (status == 0);
 }
 
@@ -93,7 +91,7 @@ int main(int argc, char **argv, char **env)
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, args[0], _strlen(args[0]));
 			write(STDOUT_FILENO, ": ", 2);
-			write(STDOUT_FILENO, "command not found\n", 19);
+			write(STDOUT_FILENO, "not found\n", 11);
 		}
 		else
 		{free(av), free(args), free(path_cat), ac = -10; }

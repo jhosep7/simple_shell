@@ -67,11 +67,11 @@ char **cutting_line(char *line)
 
 int hsh_launch(char *path, char **args, int count, char *exe_file)
 {
-	pid_t pid;
+	pid_t child;
 	int status;
 
-	pid = fork();
-	if (pid == 0)
+	child = fork();
+	if (child == 0)
 	{/* Child process */
 		if (execve(path, args, NULL) == -1)
 		{
@@ -81,7 +81,7 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, args[0], _strlen(args[0]));
 			write(STDOUT_FILENO, ": ", 2);
-			write(STDOUT_FILENO, "command not found\n", 19);
+			write(STDOUT_FILENO, "not found\n", 11);
 			if (args[0][0] == '/')
 			{free(path); }
 			return (-1);
@@ -92,12 +92,12 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 		{return (-1); }
 		return (0);
 	}
-	else if (pid < 0)
+	else if (child < 0)
 	{perror("hsh"); }
 	else
 	{/* Parent process */
 		do {
-			waitpid(pid, &status, WUNTRACED);
+			waitpid(child, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 	return (0);
