@@ -4,7 +4,7 @@
 #define READLINE_BUFSIZE 1024
 #define TOK_BUFSIZE 64
 #define PATH_BUFSIZE 1024
-#define TOK_DELIM " \t\r\n\a"
+#define TOK_DELIM " \t\r\n"
 
 #include <sys/wait.h>
 #include <sys/types.h>

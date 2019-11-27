@@ -112,7 +112,7 @@ int _strcmp(char *s1, char *s2)
 
 char **split_path(char *env[])
 {
-	int count_env, count = 0, cmp = 0, aux, dup = 0, frees = 0;
+	int count_env, count = 0, cmp = 0, aux, dup = 0;
 	char *path = "PATH", *token = NULL, *token_path = NULL;
 	char **token_path_split = malloc(TOK_BUFSIZE * sizeof(char *));
 	char **enviroment = malloc(PATH_BUFSIZE);
@@ -120,7 +120,7 @@ char **split_path(char *env[])
 	if (token_path_split == NULL || enviroment == NULL)
 	{
 		write(STDOUT_FILENO, "hsh: allocation error\n", 24);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	while (env[dup] != NULL)
 	{
@@ -143,10 +143,6 @@ char **split_path(char *env[])
 			}
 		}
 	}
-	while (env[frees])
-	{
-		free(enviroment[frees]), frees++;
-	}
 	free(enviroment);
 	token_path_split[count] = NULL;
 	return (token_path_split);
@@ -162,10 +158,15 @@ char **split_path(char *env[])
 char *path_concat(char **args, char **path)
 {
 	char *path_complete = NULL;
-	int len = 0, ok_access = 0, count_access = 0;
+	int len = 0, ok_access = 0, count_access = 0, frees = 0;
 
 	if (access(args[0], X_OK) == 0 && args[0][0] == '/')
 	{
+		while (path[frees])
+		{
+			path[frees] = NULL;
+			free(path[frees]), frees++;
+		}
 		path_complete = args[0];
 	}
 	else

@@ -38,7 +38,7 @@ char **cutting_line(char *line)
 	if (tokens_args == NULL)
 	{
 		write(STDOUT_FILENO, "hsh: allocation error\n", 23);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	token_args = strtok(line, TOK_DELIM);
 	while (token_args != NULL)
@@ -84,7 +84,7 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 			write(STDOUT_FILENO, "not found\n", 11);
 			if (args[0][0] == '/')
 			{free(path); }
-			return (-1);
+			return (0);
 		}
 		if (args[0][0] == '/')
 		{free(path); }
