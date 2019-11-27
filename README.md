@@ -23,7 +23,7 @@ un operador y el sistema operativo.
 |  `shell_EXT_functions.c`	|  Our own functions|
 |  `helpmsg.c`  |  appended to help function	 |
 |  `shell_EXT_helps.c`  |  Function to print integer	 |
-|  `_our_write.c`  |  Function to print integer	 |
+|  `_our_write.c`  |  writes a character to stdout	 |
 
 ### Example
 This shell takes the input as a standard Unix SHELL.
