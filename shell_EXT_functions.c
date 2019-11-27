@@ -112,27 +112,29 @@ int _strcmp(char *s1, char *s2)
 
 char **split_path(char *env[])
 {
-	int count_env, count = 0, cmp = 0, aux, dup = 0;
+	int count_env, count = 0, cmp = 0, aux, dup = 0, x;
 	char *path = "PATH", *token = NULL, *token_path = NULL;
 	char **token_path_split = malloc(TOK_BUFSIZE * sizeof(char *));
-	char **enviroment = malloc(PATH_BUFSIZE);
+	char **enviroment = NULL;
 
-	if (token_path_split == NULL || enviroment == NULL)
+	if (token_path_split == NULL)
 	{
-		write(STDOUT_FILENO, "hsh: allocation error\n", 24);
+		write(STDOUT_FILENO, "hsh: allocation error\n", 23);
 		exit(0);
 	}
+	for (x = 0; env[x] != NULL; x++)
+	{}
+	enviroment = malloc(sizeof(char *) * x + sizeof(char *));
+	if (enviroment == NULL)
+	{write(STDOUT_FILENO, "hsh: allocation error\n", 23), exit(0); }
 	while (env[dup] != NULL)
-	{
-		enviroment[dup] = _strdup(env[dup]), dup++;
-	}
+	{enviroment[dup] = _strdup(env[dup]), dup++; }
+	enviroment[dup] = NULL;
 	for (count_env = 0; enviroment[count_env] != NULL; count_env++)
 	{
 		token = strtok(enviroment[count_env], "=");
 		for (aux = 0; token[aux] && path[aux]; aux++)
-		{
-			cmp = token[aux] - path[aux];
-		}
+		{cmp = token[aux] - path[aux]; }
 		if (cmp == 0)
 		{
 			token = strtok(NULL, "="), token_path = strtok(token, ":");
@@ -167,6 +169,7 @@ char *path_concat(char **args, char **path)
 			path[frees] = NULL;
 			free(path[frees]), frees++;
 		}
+		free(path);
 		path_complete = args[0];
 	}
 	else
