@@ -46,7 +46,6 @@ void main_loop(char **env, char *exe_file, int ac)
 		free(line);
 		free(args);
 		free(tokens_path);
-		/* free(path_cat); */
 		gen_count++;
 	} while (status);
 }

@@ -77,7 +77,15 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 			write(STDOUT_FILENO, args[0], _strlen(args[0]));
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, "command not found\n", 19);
+			if (args[0][0] == '/')
+			{
+				free(path);
+			}
 			return (0);
+		}
+		if (args[0][0] == '/')
+		{
+			free(path);
 		}
 		return (1);
 	}
