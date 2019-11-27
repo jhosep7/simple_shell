@@ -54,7 +54,7 @@ void main_loop(char **env, char *exe_file, int ac)
 		free(args);
 		free(tokens_path);
 		gen_count++;
-	} while (status);
+	} while (status == 0);
 }
 
 /**
@@ -73,17 +73,14 @@ int main(int argc, char **argv, char **env)
 
 	av = malloc(TOK_BUFSIZE * sizeof(char *));
 	if (av == NULL)
-	{
-		return (0);
-	}
+	{return (0); }
 	if (ac > 1)
 	{
 		count = 0;
 		while (argv[count] != NULL)
 		{
 			av = str_concat(av, argv[count + 1]);
-			av = str_concat(av, " ");
-			count++;
+			av = str_concat(av, " "), count++;
 		}
 		args = cutting_line(av);
 		tokens_path = split_path(env);
@@ -99,14 +96,11 @@ int main(int argc, char **argv, char **env)
 			write(STDOUT_FILENO, "command not found\n", 19);
 		}
 		else
-		{
-			free(av), free(args), free(path_cat), ac = -10;
-		}
+		{free(av), free(args), free(path_cat), ac = -10; }
 	}
 	if (ac == -10 || ac == 1)
 	{
-		signal(SIGINT, handle_signal);
-		main_loop(env, argv[0], ac);
+		signal(SIGINT, handle_signal), main_loop(env, argv[0], ac);
 	}
 	return (0);
 }

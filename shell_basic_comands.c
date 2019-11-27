@@ -47,7 +47,7 @@ int hsh_cd(char **args)
 			perror("hsh");
 		}
 	}
-	return (1);
+	return (0);
 }
 
 /**
@@ -81,7 +81,7 @@ int hsh_help(char **args)
 		write(STDOUT_FILENO, "\n", 1);
 		write(STDOUT_FILENO, "By: JONATAN MAZO - JOSE DIAZ.\n", 31);
 		write(STDOUT_FILENO, "Website https://www.holbertonschool.com/co\n", 62);
-		return (1);
+		return (0);
 	}
 	if (_strcmp(args[1], "cd") == 0)
 	{helpCD(); }
@@ -93,7 +93,7 @@ int hsh_help(char **args)
 	{helpPWD(); }
 	if (_strcmp(args[1], "echo") == 0)
 	{helpEcho(); }
-	return (1);
+	return (0);
 }
 
 /**
@@ -104,10 +104,18 @@ int hsh_help(char **args)
 
 int hsh_exit(char **args)
 {
+	int x = 0;
+
 	if (args == NULL)
 	{
 		write(STDOUT_FILENO, "Error to exit.\n", 16);
-		return (1);
+		return (0);
 	}
-	return (0);
+	while (args[x] != NULL)
+	{
+		free(args[x]);
+		x++;
+	}
+	free(args);
+	exit(0);
 }

@@ -17,7 +17,7 @@ char *read_line_of_comands(void)
 	if (test < 0)
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
 	}
 	return (line);
 }
@@ -44,6 +44,11 @@ char **cutting_line(char *line)
 	while (token_args != NULL)
 	{
 		tokens_args[position] = token_args;
+		if (tokens_args[position] == NULL)
+		{
+			free(tokens_args);
+			return (NULL);
+		}
 		position++;
 		token_args = strtok(NULL, TOK_DELIM);
 	}
@@ -78,32 +83,24 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, "command not found\n", 19);
 			if (args[0][0] == '/')
-			{
-				free(path);
-			}
-			return (1);
+			{free(path); }
+			return (-1);
 		}
 		if (args[0][0] == '/')
-		{
-			free(path);
-		}
+		{free(path); }
 		if (isatty(fileno(stdin)) == 0)
-		{
-			return (0);
-		}
-		return (1);
+		{return (-1); }
+		return (0);
 	}
 	else if (pid < 0)
-	{
-		perror("hsh");
-	}
+	{perror("hsh"); }
 	else
 	{/* Parent process */
 		do {
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
-	return (1);
+	return (0);
 }
 
 /**
@@ -123,7 +120,7 @@ int hsh_exec(char *path, char **args, char **env, int count, char *exe_file)
 
 	if (args[0] == NULL)
 	{
-		return (1);
+		return (0);
 	}
 	if (_strcmp(args[0], "env") == 0)
 	{

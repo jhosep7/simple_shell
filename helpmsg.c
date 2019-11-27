@@ -13,7 +13,7 @@ int helpExit(void)
 	write(STDOUT_FILENO, "  the exit status is that of", 29);
 	write(STDOUT_FILENO, "  the last command executed.\n", 30);
 	write(STDOUT_FILENO, "   \n", 5);
-	return (1);
+	return (0);
 }
 /**
  * helpCD - prints the alias help
@@ -37,7 +37,7 @@ int helpCD(void)
 	write(STDOUT_FILENO, "Returns 0 if the directory is changed\n", 39);
 	write(STDOUT_FILENO, "successfully when -P is used.\n", 31);
 	write(STDOUT_FILENO, "   \n", 5);
-	return (1);
+	return (0);
 }
 /**
  * helpEnv - prints the env help page.
@@ -51,7 +51,7 @@ int helpEnv(void)
 	write(STDOUT_FILENO, "  Returns success unless invalid option given\n", 47);
 	write(STDOUT_FILENO, "  or an error occurs.\n", 23);
 	write(STDOUT_FILENO, "   \n", 5);
-	return (1);
+	return (0);
 }
 /**
  * helpPWD - prints the Pwd
@@ -69,7 +69,7 @@ int helpPWD(void)
 	write(STDOUT_FILENO, "	Returns 0 unless invalid option is given\n", 43);
 	write(STDOUT_FILENO, "	cannot be read.\n", 18);
 	write(STDOUT_FILENO, "   \n", 5);
-	return (1);
+	return (0);
 }
 /**
  * helpEcho - prints the Echo help
@@ -92,5 +92,5 @@ int helpEcho(void)
 	write(STDOUT_FILENO, "	Exit Status:\n", 15);
 	write(STDOUT_FILENO, "	Returns success unless write error occurs\n", 44);
 	write(STDOUT_FILENO, "   \n", 5);
-	return (1);
+	return (0);
 }
