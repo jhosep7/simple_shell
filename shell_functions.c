@@ -95,7 +95,7 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 }
 
 /**
- * hsh_execute - Execute shell built-in or launch program.
+ * hsh_exec - Execute shell built-in or launch program.
  * @args: Null terminated list of arguments.
  * @path: Path.
  * @env: sys variable.
@@ -104,7 +104,7 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
  * Return: 1 if the shell should continue running, 0 if it should terminate
  */
 
-int hsh_execute(char *path, char **args, char **env, int count, char *exe_file)
+int hsh_exec(char *path, char **args, char **env, int count, char *exe_file)
 {
 	char *builtin_str[] = {"cd", "exit", "help"};
 	int count_builtin = 0, x = 0;

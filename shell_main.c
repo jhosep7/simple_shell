@@ -41,7 +41,7 @@ void main_loop(char **env, char *exe_file, int ac)
 		args = cutting_line(line);
 		tokens_path = split_path(env);
 		path_cat = path_concat(args, tokens_path);
-		status = hsh_execute(path_cat, args, env, gen_count, exe_file);
+		status = hsh_exec(path_cat, args, env, gen_count, exe_file);
 
 		free(line);
 		free(args);

@@ -17,7 +17,7 @@
 
 char *read_line_of_comands(void);
 char **cutting_line(char *line);
-int hsh_execute(char *args, char **path, char **env, int count, char *exe_file);
+int hsh_exec(char *args, char **path, char **env, int count, char *exe_file);
 int hsh_cd(char **args);
 int hsh_exit(char **args);
 int hsh_help(char **args);
