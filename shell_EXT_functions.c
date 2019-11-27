@@ -162,16 +162,11 @@ char **split_path(char *env[])
 char *path_concat(char **args, char **path)
 {
 	char *path_complete = NULL;
-	int len = 0, ok_access = 0, count_access = 0, count_free = 0;
+	int len = 0, ok_access = 0, count_access = 0;
 
 	if (access(args[0], X_OK) == 0 && args[0][0] == '/')
 	{
 		path_complete = args[0];
-		while (path[count_free] != NULL)
-		{
-			free(path[count_free]);
-			count_free++;
-		}
 	}
 	else
 	{

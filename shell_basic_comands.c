@@ -70,7 +70,7 @@ int hsh_help(char **args)
 	for (i = 0; args[i] != NULL; i++)
 	{/*	write(STDOUT_FILENO, args[i], strlen(args[i]));*/	}
 	i--;
-	if (strcmp(args[i], "help") == 0)
+	if (_strcmp(args[i], "help") == 0)
 	{
 		for (j = 0; j < 6; j++)
 		{	write(STDOUT_FILENO, "\t", 1);
@@ -83,7 +83,7 @@ int hsh_help(char **args)
 		write(STDOUT_FILENO, "Website https://www.holbertonschool.com/co\n", 62);
 		return (1);
 	}
-	if (strcmp(args[1], "cd") == 0)
+	if (_strcmp(args[1], "cd") == 0)
 	{helpCD(); }
 	if (_strcmp(args[1], "exit") == 0)
 	{helpExit(); }

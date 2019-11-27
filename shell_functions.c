@@ -81,11 +81,15 @@ int hsh_launch(char *path, char **args, int count, char *exe_file)
 			{
 				free(path);
 			}
-			return (0);
+			return (1);
 		}
 		if (args[0][0] == '/')
 		{
 			free(path);
+		}
+		if (isatty(fileno(stdin)) == 0)
+		{
+			return (0);
 		}
 		return (1);
 	}

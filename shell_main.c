@@ -35,7 +35,14 @@ void main_loop(char **env, char *exe_file, int ac)
 		gen_count = 1;
 	}
 	do {
-		write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
+		if (isatty(fileno(stdin)) == 0)
+		{
+			/*  */
+		}
+		else
+		{
+			write(STDOUT_FILENO, "#Prototype_Shell $: ", 21);
+		}
 
 		line = read_line_of_comands();
 		args = cutting_line(line);
@@ -91,7 +98,10 @@ int main(int argc, char **argv, char **env)
 			write(STDOUT_FILENO, ": ", 2);
 			write(STDOUT_FILENO, "command not found\n", 19);
 		}
-		free(av), free(args), free(path_cat), ac = -10;
+		else
+		{
+			free(av), free(args), free(path_cat), ac = -10;
+		}
 	}
 	if (ac == -10 || ac == 1)
 	{
