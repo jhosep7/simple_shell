@@ -7,14 +7,13 @@ The goal of this project is to represent the command line SHELL.
 Compilation is done usign `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`.
 
 ### Overview
-Es un programa que brinda una interfaz al usuario, la cual permite comunicación
-del usuario con el sistema operativo, esto mediante una ventana o pantalla la
-cual permite al usuario dar órdenes al sistema operativo. En otras palabras
-podemos decir que el Shell es un programa que funciona de intermediario entre
-un operador y el sistema operativo.
-
+A program that provides an interface to the user, which allows communication
+of the user with the operating system, this through a window or screen the
+which allows the user to give orders to the operating system. In other words
+we can say that the Shell is a program that works as an intermediary between
+An operator and the operating system.
 ## Contents
-|   ***File***    |  **Decription**                       |
+|   ***File***    |  **Description**                       |
 |---------------|---------------------------------------|
 |  `holberton.h`	|  Header file: contains 	|
 |  `shell_main.c`	|  Main file				|
